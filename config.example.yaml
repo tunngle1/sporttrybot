@@ -1,0 +1,59 @@
+api_id: 123456
+api_hash: "your_api_hash"
+bot_token: "your_bot_token"
+
+# Userbot session filename (Telethon)
+user_session: "user_session"
+
+# Polling interval in seconds
+poll_interval: 60
+
+# Path to SQLite database
+db_path: "data.db"
+
+# Forward with link to original post if possible
+forward_with_link: true
+
+# Optional: only process messages from this date (YYYY-MM-DD). Empty = no limit.
+start_date: "2025-12-01"
+
+# Channels to monitor (userbot must be joined)
+channels:
+  - "@marathonecmagazine"
+  - "@shelgorn_tg"
+  - "@russiarunninglife"
+  - "@dtrunner"
+  - "@mountainrace"
+  - "@norunforme"
+
+cities:
+  - name: "Москва"
+    keywords: ["Москва", "Moscow", "MSK"]
+  - name: "Санкт-Петербург"
+    keywords: ["Санкт-Петербург", "СПб", "Питер", "Saint Petersburg", "Spb"]
+  - name: "Сочи"
+    keywords: ["Сочи", "Sochi"]
+  - name: "Казань"
+    keywords: ["Казань", "Kazan"]
+
+# Optional: if present, at least one category keyword must match.
+categories:
+  - name: "Бег"
+    keywords: ["бег", "марафон", "забег"]
+  - name: "Триатлон"
+    keywords: ["триатлон", "ironman", "swimrun"]
+
+# Skip messages containing these keywords (e.g., ads)
+exclude_keywords:
+  - "реклама"
+  - "промокод"
+  - "скидка"
+hard_exclude_keywords:
+  - "erid"
+  - "реклама!"
+
+# Fallback: used when categories are empty/not set.
+event_keywords:
+  - "марафон"
+  - "забег"
+  - "забег на 10"
