@@ -42,6 +42,7 @@ async def poll_sources(
     event_keywords: List[str],
     exclude_keywords: List[str],
     hard_exclude_keywords: List[str],
+    refresh_event: asyncio.Event,
     forward_with_link: bool,
     poll_interval: int,
     db_path: str,
@@ -75,7 +76,17 @@ async def poll_sources(
                     return
                 except Exception:
                     logger.exception("Failed to poll source %s", source)
-            await asyncio.sleep(poll_interval)
+            try:
+                sleep_task = asyncio.create_task(asyncio.sleep(poll_interval))
+                refresh_task = asyncio.create_task(refresh_event.wait())
+                done, pending = await asyncio.wait(
+                    {sleep_task, refresh_task}, return_when=asyncio.FIRST_COMPLETED
+                )
+                for task in pending:
+                    task.cancel()
+                refresh_event.clear()
+            except asyncio.CancelledError:
+                raise
 
 
 async def _process_source(

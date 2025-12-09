@@ -16,8 +16,8 @@ logging.basicConfig(
 logger = logging.getLogger("app")
 
 
-async def handle_commands(bot_api: BotApiClient, db_path: str) -> None:
-    """Bot API long-polling for /start, /stop, /status."""
+async def handle_commands(bot_api: BotApiClient, db_path: str, refresh_event: asyncio.Event) -> None:
+    """Bot API long-polling for /start, /stop, /status, /refresh."""
     last_update_id = 0
     base_url = bot_api.base_url
 
@@ -51,6 +51,9 @@ async def handle_commands(bot_api: BotApiClient, db_path: str) -> None:
                         subs = await get_enabled_chats(db_path)
                         status = "включен" if chat_id in subs else "выключен"
                         await bot_api.send_message(chat_id, f"Статус поиска: {status}")
+                    elif text.startswith("/refresh"):
+                        refresh_event.set()
+                        await bot_api.send_message(chat_id, "Обновление запущено, проверяю новые посты.")
             except asyncio.CancelledError:
                 raise
             except Exception:
@@ -70,6 +73,8 @@ async def main() -> None:
     await init_db(cfg.db_path)
     bot_api = BotApiClient(cfg.bot_token)
 
+    refresh_event = asyncio.Event()
+
     userbot_task = asyncio.create_task(
         poll_sources(
             api_id=cfg.api_id,
@@ -81,6 +86,7 @@ async def main() -> None:
             event_keywords=event_keywords,
             exclude_keywords=exclude_keywords,
             hard_exclude_keywords=hard_exclude_keywords,
+            refresh_event=refresh_event,
             forward_with_link=cfg.forward_with_link,
             poll_interval=cfg.poll_interval,
             db_path=cfg.db_path,
@@ -90,7 +96,7 @@ async def main() -> None:
         )
     )
 
-    commands_task = asyncio.create_task(handle_commands(bot_api, cfg.db_path))
+    commands_task = asyncio.create_task(handle_commands(bot_api, cfg.db_path, refresh_event))
 
     logger.info("Service started.")
     await asyncio.gather(userbot_task, commands_task)
