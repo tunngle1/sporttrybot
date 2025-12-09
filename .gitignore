@@ -5,3 +5,4 @@ data.db
 user_session*
 .DS_Store
 *.log
+config.yaml
