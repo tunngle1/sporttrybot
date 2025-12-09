@@ -1,0 +1,77 @@
+api_id: 38559734
+api_hash: "3eedc2e98f0950286945902bd1034662"
+bot_token: "8340129714:AAGltQQfR2fgYX9rfwQMbv-N2dNt8Q4uwVA"
+
+# Userbot session filename (Telethon)
+user_session: "user_session"
+
+# Polling interval in seconds
+poll_interval: 60
+
+# Path to SQLite database
+db_path: "data.db"
+
+start_date: "2025-12-01"
+
+# Forward with link to original post if possible
+forward_with_link: true
+
+# Channels to monitor (userbot must be joined)
+channels:
+  - "@marathonecmagazine"
+  - "@shelgorn_tg"
+  - "@russiarunninglife"
+  - "@dtrunner"
+  - "@mountainrace"
+  - "@norunforme"
+
+cities:
+  - name: "Москва"
+    keywords: ["Москва", "Moscow", "MSK"]
+  - name: "Санкт-Петербург"
+    keywords: ["Санкт-Петербург", "СПб", "Питер", "Saint Petersburg", "Spb"]
+  - name: "Сочи"
+    keywords: ["Сочи", "Sochi"]
+  - name: "Казань"
+    keywords: ["Казань", "Kazan"]
+
+# Event keywords (at least one must be present). If omitted, defaults are used.
+event_keywords:
+  - "турнир"
+  - "матч"
+  - "игра"
+  - "забег"
+  - "марафон"
+  - "чемпионат"
+  - "соревнования"
+  - "кубок"
+  - "регистрация"
+  - "дистанция"
+  - "старт"
+  - "финиш"
+
+# Optional: if present, at least one category keyword must match.
+categories:
+  - name: "Бег"
+    keywords: ["бег", "марафон", "забег"]
+  - name: "Триатлон"
+    keywords: ["триатлон", "ironman", "swimrun"]
+
+# Skip messages containing these keywords (soft skip: only if no categories/keywords matched)
+exclude_keywords:
+  - "реклама"
+  - "промокод"
+  - "скидка"
+  - "распродажа"
+  - "каталог"
+
+# Always skip if these keywords are present (hard skip)
+hard_exclude_keywords:
+  - "erid"
+  - "реклама!"
+
+# Fallback: used when categories are empty/not set.
+event_keywords:
+  - "марафон"
+  - "забег"
+  - "забег на 10"

@@ -3,6 +3,5 @@ __pycache__/
 *.pyc
 data.db
 user_session*
-config.yaml
 .DS_Store
 *.log
